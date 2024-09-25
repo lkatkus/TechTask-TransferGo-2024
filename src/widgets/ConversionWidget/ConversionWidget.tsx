@@ -12,24 +12,43 @@ import { useConversionQuery } from "./ConversionWidget.api";
 
 const ConversionWidget = () => {
   const [queryEnabled, setQueryEnabled] = useState(false);
+  const [updatingToAmount, setUpdatingToAmount] = useState(false);
+
   const [fromAmount, setFromAmount] = useState(1);
-  const [toAmount, setToAmount] = useState(1);
   const [fromCurrency, setFromCurrency] = useState<CurrencyCode>(
     INITIAL_FROM_CURRENCY
   );
+
+  const [toAmount, setToAmount] = useState(1);
   const [toCurrency, setToCurrency] =
     useState<CurrencyCode>(INITIAL_TO_CURRENCY);
 
+  const [conversionConfig, setConversionConfig] = useState<{
+    from: CurrencyCode;
+    to: CurrencyCode;
+    amount: number;
+  }>({
+    from: INITIAL_FROM_CURRENCY,
+    to: INITIAL_TO_CURRENCY,
+    amount: 1,
+  });
+
   const { data, isFetching } = useConversionQuery({
     enabled: queryEnabled,
-    from: fromCurrency,
-    to: toCurrency,
-    amount: String(fromAmount),
+    from: conversionConfig.from,
+    to: conversionConfig.to,
+    amount: String(conversionConfig.amount),
   });
 
   const handleClickSwitchCurrency = () => {
     setFromCurrency(toCurrency);
     setToCurrency(fromCurrency);
+
+    setConversionConfig({
+      from: toCurrency,
+      to: fromCurrency,
+      amount: fromAmount,
+    });
   };
 
   const handleClickConvert = () => {
@@ -42,12 +61,14 @@ const ConversionWidget = () => {
     const newValue = e.target.value as CurrencyCode;
 
     setFromCurrency(newValue);
+    setConversionConfig((v) => ({ ...v, from: newValue }));
   };
 
   const handleChangeToCurrency: ChangeEventHandler<HTMLSelectElement> = (e) => {
     const newValue = e.target.value as CurrencyCode;
 
     setToCurrency(newValue);
+    setConversionConfig((v) => ({ ...v, to: newValue }));
   };
 
   const handleChangeFromAmount: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -55,19 +76,36 @@ const ConversionWidget = () => {
     const parsedNumber = Number(newValue);
 
     setFromAmount(parsedNumber);
+    setConversionConfig({
+      from: fromCurrency,
+      to: toCurrency,
+      amount: parsedNumber,
+    });
   };
 
   const handleChangeToAmount: ChangeEventHandler<HTMLInputElement> = (e) => {
     const newValue = e.target.value;
     const parsedNumber = Number(newValue);
 
+    setUpdatingToAmount(true);
     setToAmount(parsedNumber);
+    setConversionConfig({
+      from: toCurrency,
+      to: fromCurrency,
+      amount: parsedNumber,
+    });
   };
 
   useEffect(() => {
     if (data) {
-      setFromAmount(data.fromAmount);
-      setToAmount(data.toAmount);
+      if (updatingToAmount) {
+        setUpdatingToAmount(false);
+        setFromAmount(data.toAmount);
+        setToAmount(data.fromAmount);
+      } else {
+        setFromAmount(data.fromAmount);
+        setToAmount(data.toAmount);
+      }
     }
   }, [data]);
 
