@@ -16,6 +16,8 @@ import { CurrencyCode } from "./ConversionWidget.types";
 import {
   API_FX_RATES_URL,
   AVAILABLE_CURRENCY,
+  INITIAL_FROM_CURRENCY,
+  INITIAL_TO_CURRENCY,
 } from "./ConversionWidget.constants";
 
 const queryClient = new QueryClient();
@@ -50,8 +52,11 @@ const ConversionWidget = () => {
   const [queryEnabled, setQueryEnabled] = useState(false);
   const [fromAmount, setFromAmount] = useState(1);
   const [toAmount, setToAmount] = useState(1);
-  const [fromCurrency, setFromCurrency] = useState<CurrencyCode>("EUR");
-  const [toCurrency, setToCurrency] = useState<CurrencyCode>("GBP");
+  const [fromCurrency, setFromCurrency] = useState<CurrencyCode>(
+    INITIAL_FROM_CURRENCY
+  );
+  const [toCurrency, setToCurrency] =
+    useState<CurrencyCode>(INITIAL_TO_CURRENCY);
 
   const { isPending, isError, isLoading, data, error } = useQuery({
     enabled: queryEnabled,
@@ -133,7 +138,7 @@ const ConversionWidget = () => {
           >
             {AVAILABLE_CURRENCY.map(({ code, icon }) => {
               return (
-                <option key={code} value={code}>
+                <option key={code} value={code} disabled={code === toCurrency}>
                   {icon}
                   {code}
                 </option>
@@ -155,7 +160,11 @@ const ConversionWidget = () => {
           >
             {AVAILABLE_CURRENCY.map(({ code, icon }) => {
               return (
-                <option key={code} value={code}>
+                <option
+                  key={code}
+                  value={code}
+                  disabled={code === fromCurrency}
+                >
                   {icon}
                   {code}
                 </option>
