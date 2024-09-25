@@ -1,0 +1,10 @@
+import { CurrencyCode } from "./ConversionWidget.types";
+
+export const API_FX_RATES_URL = "https://my.transfergo.com/api/fx-rates";
+
+export const AVAILABLE_CURRENCY: { code: CurrencyCode; icon: string }[] = [
+  { code: "PLN", icon: "🇵🇱" },
+  { code: "EUR", icon: "🇪🇺" },
+  { code: "GBP", icon: "🇬🇧" },
+  { code: "UAH", icon: "🇺🇦" },
+];
