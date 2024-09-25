@@ -6,9 +6,9 @@ export const INITIAL_AMOUNT = 1;
 export const INITIAL_FROM_CURRENCY = "EUR";
 export const INITIAL_TO_CURRENCY = "GBP";
 
-export const AVAILABLE_CURRENCY: { code: CurrencyCode; icon: string }[] = [
-  { code: "PLN", icon: "🇵🇱" },
-  { code: "EUR", icon: "🇪🇺" },
-  { code: "GBP", icon: "🇬🇧" },
-  { code: "UAH", icon: "🇺🇦" },
+export const AVAILABLE_CURRENCY: { value: CurrencyCode; label: string }[] = [
+  { value: "PLN", label: "🇵🇱 PLN" },
+  { value: "EUR", label: "🇪🇺 EUR" },
+  { value: "GBP", label: "🇬🇧 GBP" },
+  { value: "UAH", label: "🇺🇦 UAH" },
 ];
