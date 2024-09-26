@@ -1,1 +1,1 @@
-{"root":["./src/index.tsx"],"version":"5.6.2"}
+{"root":["./src/index.tsx","./src/components/index.tsx","./src/components/testcomponent/testcomponent.stories.tsx","./src/components/testcomponent/testcomponent.tsx","./src/components/testcomponent/index.tsx"],"version":"5.6.2"}
