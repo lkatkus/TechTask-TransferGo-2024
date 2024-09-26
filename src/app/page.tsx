@@ -1,4 +1,4 @@
-import { ConversionWidget } from "../widgets/ConversionWidget";
+import { ConversionWidget } from "../widgets";
 
 export default function Home() {
   return (

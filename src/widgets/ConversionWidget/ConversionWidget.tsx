@@ -8,6 +8,8 @@ import {
 } from "react";
 import { useFormik } from "formik";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRightArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { SelectInput, NumberInput } from "@/components";
 import { useConversionQuery } from "./ConversionWidget.api";
 import {
@@ -132,8 +134,11 @@ const ConversionWidget = () => {
           options={getCurrencyOptions(AVAILABLE_CURRENCY, formik.values.to)}
         />
 
-        <button className="mx-2 px-2" onClick={handleClickSwitchCurrency}>
-          {">"}
+        <button
+          className="mx-2 px-2 flex items-center justify-center"
+          onClick={handleClickSwitchCurrency}
+        >
+          <FontAwesomeIcon size="lg" icon={faArrowRightArrowLeft} />
         </button>
 
         <SelectInput
@@ -199,7 +204,7 @@ const ConversionWidget = () => {
               </p>
             </div>
             <div>
-              <p className="text-xs">
+              <p className="text-xs text-gray-500">
                 All figures are live mid-market rates, which are for
                 informational purposes only. To see the rates for money
                 transfer, please select sending money option.

@@ -39,7 +39,7 @@ export const NumberInput = ({
         }
       >
         <input
-          className="bg-transparent border-none w-full text-2xl font-bold text-gray-700 px-2 focus:outline-none"
+          className="bg-transparent border-none w-full text-xl font-bold text-gray-700 px-2 focus:outline-none"
           type="number"
           min={0.01}
           step="0.01"
@@ -49,7 +49,11 @@ export const NumberInput = ({
           onBlur={onBlur}
           onChange={onChange}
         />
-        {suffix && <div>{suffix}</div>}
+        {suffix && (
+          <div className={error ? "text-red-500" : "text-gray-300"}>
+            {suffix}
+          </div>
+        )}
       </div>
       {error && <div className="text-red-500">{error}</div>}
     </div>
