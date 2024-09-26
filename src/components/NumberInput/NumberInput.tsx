@@ -39,6 +39,7 @@ export const NumberInput = ({
         }
       >
         <input
+          data-testid={`NumberInput-${name}`}
           className="bg-transparent border-none w-full text-xl font-bold text-gray-700 px-2 focus:outline-none"
           type="number"
           min={0.01}
@@ -48,6 +49,7 @@ export const NumberInput = ({
           value={value}
           onBlur={onBlur}
           onChange={onChange}
+          // {...rest}
         />
         {suffix && (
           <div className={error ? "text-red-500" : "text-gray-300"}>

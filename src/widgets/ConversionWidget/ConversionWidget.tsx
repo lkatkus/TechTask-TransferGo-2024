@@ -22,7 +22,7 @@ import {
   validateConversionForm,
 } from "./ConversionWidget.utils";
 
-const ConversionWidget = () => {
+export const ConversionWidget = () => {
   const [shouldFetch, setShouldFetch] = useState(false);
   const [conversionConfig, setConversionConfig] = useState(
     INITIAL_CONVERSION_CONFIG
@@ -185,6 +185,7 @@ const ConversionWidget = () => {
       <div className="mt-4">
         {!data ? (
           <Button
+            data-testid="convertButton"
             disabled={isFetching || !formik.isValid}
             onClick={handleSubmit}
           >
@@ -193,7 +194,7 @@ const ConversionWidget = () => {
         ) : (
           <div>
             <div className="mb-2">
-              <p className="text-s font-bold">
+              <p data-testid="rateDetails" className="text-s font-bold">
                 1 {data.from} = {data.rate} {data.to}
               </p>
             </div>

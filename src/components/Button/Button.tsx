@@ -17,11 +17,17 @@ export const Button = ({
   disabled,
   onClick,
   children,
+  ...rest
 }: ButtonProps) => {
   const buttonClassName = BUTTON_STYLES[variant];
 
   return (
-    <button disabled={disabled} onClick={onClick} className={buttonClassName}>
+    <button
+      disabled={disabled}
+      onClick={onClick}
+      className={buttonClassName}
+      {...rest}
+    >
       {children}
     </button>
   );
