@@ -56,15 +56,13 @@ const ConversionWidget = () => {
   };
 
   const handleClickSwitchCurrency = () => {
-    const { values, isValid } = formik;
+    const { values } = formik;
 
-    if (isValid) {
-      formik.setFieldValue("from", values.to);
-      formik.setFieldValue("to", values.from);
+    formik.setFieldValue("from", values.to);
+    formik.setFieldValue("to", values.from);
 
-      if (shouldFetch) {
-        formik.submitForm();
-      }
+    if (shouldFetch) {
+      formik.submitForm();
     }
   };
 
@@ -131,7 +129,7 @@ const ConversionWidget = () => {
           name="from"
           value={formik.values.from}
           onChange={handleChangeWithSubmit}
-          options={getCurrencyOptions(AVAILABLE_CURRENCY, formik.values.to)}
+          options={getCurrencyOptions(AVAILABLE_CURRENCY, [formik.values.to])}
         />
 
         <Button variant="transparent" onClick={handleClickSwitchCurrency}>
@@ -143,7 +141,7 @@ const ConversionWidget = () => {
           name="to"
           value={formik.values.to}
           onChange={handleChangeWithSubmit}
-          options={getCurrencyOptions(AVAILABLE_CURRENCY, formik.values.from)}
+          options={getCurrencyOptions(AVAILABLE_CURRENCY, [formik.values.from])}
         />
       </div>
 

@@ -1,9 +1,9 @@
 import { ChangeEventHandler } from "react";
 
-interface SelectInputOption {
+export interface SelectInputOption {
   value: string;
   label: string;
-  disabled: boolean;
+  disabled?: boolean;
 }
 interface SelectInputProps {
   label: string;
