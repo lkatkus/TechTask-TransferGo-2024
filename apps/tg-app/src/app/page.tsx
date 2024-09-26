@@ -1,3 +1,4 @@
+import { TestComponent } from "tg-ui";
 import { ConversionWidget } from "../widgets";
 
 export default function Home() {
@@ -13,6 +14,7 @@ export default function Home() {
         </div>
         <div className="p-4 flex justify-center items-center bg-gray-200">
           <div>CONTENT</div>
+          <TestComponent />
         </div>
       </main>
 

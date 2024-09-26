@@ -2,7 +2,7 @@
   "name": "tg-monorepo",
   "version": "0.1.0",
   "private": true,
-  "packageManager": "npm@8.4.1",
+  "packageManager": "pnpm@6.14.1",
   "scripts": {
     "dev": "turbo dev"
   }
