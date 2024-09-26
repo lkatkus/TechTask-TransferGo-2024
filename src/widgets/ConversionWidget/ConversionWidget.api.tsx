@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { CurrencyCode } from "./ConversionWidget.types";
 import { API_FX_RATES_URL } from "./ConversionWidget.constants";
 
@@ -23,13 +23,6 @@ const fetchConversionRate = async ({
   const res = await fetch(url);
   const data = await res.json();
 
-  // @TODO remove after testing
-  return new Promise((res) => {
-    setTimeout(() => {
-      res(data);
-    }, 500);
-  });
-
   // @TODO handle error
   return data;
 };
@@ -47,6 +40,7 @@ export const useConversionQuery = ({
 }) => {
   return useQuery({
     enabled,
+    placeholderData: keepPreviousData,
     queryKey: ["conversionRate", from, to, amount],
     queryFn: () =>
       fetchConversionRate({

@@ -1,7 +1,17 @@
 export const validateConversionForm = (values: any) => {
-  const { from, fromAmount } = values;
+  const { from, fromAmount, toAmount } = values;
 
   const errors: any = {};
+
+  // @TODO add proper falsy validation
+
+  if (!fromAmount && fromAmount !== 0) {
+    errors.fromAmount = "Required";
+  }
+
+  if (!toAmount && toAmount !== 0) {
+    errors.toAmount = "Required";
+  }
 
   if (from === "PLN" && fromAmount > 20000) {
     errors.fromAmount = "Max 20000PLN";

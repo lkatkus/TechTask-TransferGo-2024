@@ -1,68 +1,49 @@
 "use client";
 
+import {
+  ChangeEventHandler,
+  FocusEventHandler,
+  useEffect,
+  useState,
+} from "react";
+import { useFormik } from "formik";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
-import { CurrencyCode } from "./ConversionWidget.types";
+import { SelectInput, NumberInput } from "@/components";
+import { useConversionQuery } from "./ConversionWidget.api";
 import {
   AVAILABLE_CURRENCY,
-  INITIAL_FROM_CURRENCY,
-  INITIAL_TO_CURRENCY,
+  INITIAL_CONVERSION_CONFIG,
+  INITIAL_CONVERSION_FORM_STATE,
 } from "./ConversionWidget.constants";
-import { useConversionQuery } from "./ConversionWidget.api";
-import { useFormik } from "formik";
-import { SelectInput } from "@/components/SelectInput";
-import { NumberInput } from "@/components/NumberInput";
 import {
   getCurrencyOptions,
   validateConversionForm,
 } from "./ConversionWidget.utils";
-import { Spinner } from "@/components/Spinner";
 
 const ConversionWidget = () => {
-  const [queryEnabled, setQueryEnabled] = useState(false);
-  const [updatingToAmount, setUpdatingToAmount] = useState(false);
-
-  const [conversionConfig, setConversionConfig] = useState<{
-    from: CurrencyCode;
-    to: CurrencyCode;
-    amount: number;
-  }>({
-    from: INITIAL_FROM_CURRENCY,
-    to: INITIAL_TO_CURRENCY,
-    amount: 1,
-  });
+  const [shouldFetch, setShouldFetch] = useState(false);
+  const [conversionConfig, setConversionConfig] = useState(
+    INITIAL_CONVERSION_CONFIG
+  );
 
   const { data, isFetching } = useConversionQuery({
-    enabled: queryEnabled,
+    enabled: shouldFetch,
     from: conversionConfig.from,
     to: conversionConfig.to,
-    amount: String(conversionConfig.amount),
+    amount: conversionConfig.amount,
   });
 
   const formik = useFormik({
-    initialValues: {
-      from: INITIAL_FROM_CURRENCY,
-      to: INITIAL_TO_CURRENCY,
-      fromAmount: 1,
-      toAmount: 1,
-    },
+    initialValues: INITIAL_CONVERSION_FORM_STATE,
     onSubmit: (values) => {
-      const payload: any = updatingToAmount
-        ? {
-            from: values.to,
-            to: values.from,
-            amount: values.toAmount,
-          }
-        : {
-            from: values.from,
-            to: values.to,
-            amount: values.fromAmount,
-          };
+      setConversionConfig({
+        from: values.from,
+        to: values.to,
+        amount: values.fromAmount,
+      });
 
-      setConversionConfig(payload);
-
-      if (!queryEnabled) {
-        setQueryEnabled(true);
+      if (!shouldFetch) {
+        setShouldFetch(true);
       }
     },
     validate: validateConversionForm,
@@ -72,66 +53,80 @@ const ConversionWidget = () => {
     formik.submitForm();
   };
 
-  const handleClickSwitchCurrency = (e) => {
-    e.preventDefault();
+  const handleClickSwitchCurrency = () => {
+    const { values, isValid } = formik;
 
-    const { values } = formik;
+    if (isValid) {
+      formik.setFieldValue("from", values.to);
+      formik.setFieldValue("to", values.from);
 
-    formik.setFieldValue("from", values.to);
-    formik.setFieldValue("to", values.from);
-
-    // @TODO check issue when switching currencies over the limit
-
-    if (queryEnabled) {
-      formik.submitForm();
+      if (shouldFetch) {
+        formik.submitForm();
+      }
     }
   };
 
-  const handleChangeWithSubmit = (e) => {
+  const handleChangeWithSubmit: ChangeEventHandler<HTMLSelectElement> = (e) => {
     formik.handleChange(e);
 
-    if (queryEnabled) {
+    if (shouldFetch) {
       formik.submitForm();
     }
   };
 
-  const handleBlurWithSubmit = (e) => {
+  const handleBlurFromAmount: FocusEventHandler<HTMLInputElement> = (e) => {
     formik.handleBlur(e);
 
-    if (queryEnabled) {
-      formik.submitForm();
+    if (shouldFetch) {
+      const { values, errors } = formik;
+
+      if (!errors.fromAmount) {
+        setConversionConfig({
+          from: values.from,
+          to: values.to,
+          amount: values.fromAmount,
+        });
+      }
     }
   };
 
-  const handleBlurToAmount = (e) => {
+  const handleBlurToAmount: FocusEventHandler<HTMLInputElement> = (e) => {
     formik.handleBlur(e);
-    setUpdatingToAmount(true);
 
-    if (queryEnabled) {
-      formik.submitForm();
+    if (shouldFetch) {
+      const { values, errors } = formik;
+
+      if (!errors.toAmount) {
+        setConversionConfig({
+          from: values.to,
+          to: values.from,
+          amount: values.toAmount,
+        });
+      }
     }
   };
 
   useEffect(() => {
     if (data) {
-      if (updatingToAmount) {
-        setUpdatingToAmount(false);
+      const isInverted =
+        formik.values.to === data.from && formik.values.from === data.to;
 
-        formik.setFieldValue("fromAmount", data.toAmount);
+      if (isInverted) {
         formik.setFieldValue("toAmount", data.fromAmount);
+        formik.setFieldValue("fromAmount", data.toAmount);
       } else {
         formik.setFieldValue("toAmount", data.toAmount);
+        formik.setFieldValue("fromAmount", data.fromAmount);
       }
     }
   }, [data]);
 
   return (
-    <div className=" w-full p-4 bg-gray-100 relative">
-      {isFetching && <Spinner />}
+    <div className="w-full p-4 md:bg-gray-100 relative">
       <div className="w-full flex mb-4 items-center">
         <div className="flex-1">
           <SelectInput
-            label="FROM:"
+            label="FROM"
             name="from"
             value={formik.values.from}
             onChange={handleChangeWithSubmit}
@@ -148,7 +143,7 @@ const ConversionWidget = () => {
 
         <div className="flex-1">
           <SelectInput
-            label="TO:"
+            label="TO"
             name="to"
             value={formik.values.to}
             onChange={handleChangeWithSubmit}
@@ -158,28 +153,28 @@ const ConversionWidget = () => {
       </div>
 
       <div className="mb-4 flex">
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1">
           <NumberInput
-            label="AMOUNT:"
-            suffix={formik.values.from}
             name="fromAmount"
+            label="AMOUNT"
+            suffix={formik.values.from}
             value={formik.values.fromAmount}
             error={formik.errors.fromAmount}
-            onBlur={handleBlurWithSubmit}
             onChange={formik.handleChange}
+            onBlur={handleBlurFromAmount}
           />
         </div>
 
         {data && (
-          <div className="flex-1 flex flex-col">
+          <div className="flex-1">
             <NumberInput
-              label="CONVERTED TO:"
-              suffix={formik.values.to}
               name="toAmount"
+              label="CONVERTED TO"
+              suffix={formik.values.to}
               value={formik.values.toAmount}
-              onBlur={handleBlurToAmount}
-              onChange={formik.handleChange}
               error={formik.errors.toAmount}
+              onChange={formik.handleChange}
+              onBlur={handleBlurToAmount}
             />
           </div>
         )}
@@ -187,7 +182,11 @@ const ConversionWidget = () => {
 
       {!data ? (
         <div>
-          <button onClick={handleSubmit} className="p-1 w-full bg-blue-500">
+          <button
+            disabled={isFetching}
+            onClick={handleSubmit}
+            className="p-1 w-full bg-blue-500"
+          >
             Convert
           </button>
         </div>
