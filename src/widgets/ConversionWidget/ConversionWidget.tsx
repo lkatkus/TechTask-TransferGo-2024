@@ -10,7 +10,7 @@ import { useFormik } from "formik";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { SelectInput, NumberInput } from "@/components";
+import { SelectInput, NumberInput, Button } from "@/components";
 import { useConversionQuery } from "./ConversionWidget.api";
 import {
   AVAILABLE_CURRENCY,
@@ -134,12 +134,9 @@ const ConversionWidget = () => {
           options={getCurrencyOptions(AVAILABLE_CURRENCY, formik.values.to)}
         />
 
-        <button
-          className="mx-2 px-2 flex items-center justify-center"
-          onClick={handleClickSwitchCurrency}
-        >
+        <Button variant="transparent" onClick={handleClickSwitchCurrency}>
           <FontAwesomeIcon size="lg" icon={faArrowRightArrowLeft} />
-        </button>
+        </Button>
 
         <SelectInput
           label="TO"
@@ -189,13 +186,12 @@ const ConversionWidget = () => {
 
       <div className="mt-4">
         {!data ? (
-          <button
-            disabled={isFetching}
+          <Button
+            disabled={isFetching || !formik.isValid}
             onClick={handleSubmit}
-            className="p-2 w-full bg-green-500 text-white"
           >
             Convert
-          </button>
+          </Button>
         ) : (
           <div>
             <div className="mb-2">
