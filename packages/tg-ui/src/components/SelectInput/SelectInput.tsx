@@ -21,15 +21,15 @@ export const SelectInput = ({
   onChange,
 }: SelectInputProps) => {
   return (
-    <div className="flex flex-col border-b border-gray-300 py-2">
+    <div className="tg-ui-flex tg-ui-flex-col tg-ui-border-b tg-ui-border-gray-300 tg-ui-py-2">
       <label
         htmlFor={name}
-        className="block text-gray-700 text-xs font-bold mb-2"
+        className="tg-ui-block tg-ui-text-gray-700 tg-ui-text-xs tg-ui-font-bold tg-ui-mb-2"
       >
         {label}
       </label>
       <select
-        className="bg-transparent border-none w-full text-xl text-gray-700 px-2 focus:outline-none"
+        className="tg-ui-bg-transparent tg-ui-border-none tg-ui-w-full tg-ui-text-xl tg-ui-text-gray-700 tg-ui-px-2 focus:tg-ui-outline-none"
         id={name}
         name={name}
         value={value}
@@ -38,7 +38,7 @@ export const SelectInput = ({
         {options.map(({ value, label, disabled }) => {
           return (
             <option
-              className="bg-red-100"
+              className="tg-ui-bg-red-100"
               key={value}
               value={value}
               disabled={disabled}

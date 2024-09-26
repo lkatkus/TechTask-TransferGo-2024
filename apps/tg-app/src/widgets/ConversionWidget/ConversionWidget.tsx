@@ -7,10 +7,10 @@ import {
   useState,
 } from "react";
 import { useFormik } from "formik";
+import { SelectInput, NumberInput, Button } from "tg-ui";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { SelectInput, NumberInput, Button } from "@/components";
 import { useConversionQuery } from "./ConversionWidget.api";
 import {
   AVAILABLE_CURRENCY,
@@ -21,6 +21,7 @@ import {
   getCurrencyOptions,
   validateConversionForm,
 } from "./ConversionWidget.utils";
+import "tg-ui/dist/style.css";
 
 export const ConversionWidget = () => {
   const [shouldFetch, setShouldFetch] = useState(false);

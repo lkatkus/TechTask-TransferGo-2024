@@ -1,4 +1,4 @@
-import { SelectInputOption } from "@/components/SelectInput/SelectInput";
+import { SelectInputOption } from "tg-ui";
 import { ConversionFormValues } from "./ConversionWidget.types";
 
 export const validateConversionForm = (values: ConversionFormValues) => {

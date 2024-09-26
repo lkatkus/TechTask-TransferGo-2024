@@ -6,7 +6,7 @@ interface NumberInputProps {
   name: string;
   suffix?: string;
   error?: string;
-  onBlur: FocusEventHandler<HTMLInputElement>;
+  onBlur?: FocusEventHandler<HTMLInputElement>;
   onChange: ChangeEventHandler<HTMLInputElement>;
 }
 
@@ -25,8 +25,8 @@ export const NumberInput = ({
         htmlFor={name}
         className={
           error
-            ? "text-red-500 text-xs font-bold mb-2"
-            : "text-gray-700 text-xs font-bold mb-2"
+            ? "tg-ui-text-red-500 tg-ui-text-xs tg-ui-font-bold tg-ui-mb-2"
+            : "tg-ui-text-gray-700 tg-ui-text-xs tg-ui-font-bold tg-ui-mb-2"
         }
       >
         {label}
@@ -34,13 +34,13 @@ export const NumberInput = ({
       <div
         className={
           error
-            ? "flex border-b border-red-500 text-red-500"
-            : "flex border-b border-gray-300"
+            ? "tg-ui-flex tg-ui-border-b tg-ui-border-red-500 tg-ui-text-red-500"
+            : "tg-ui-flex tg-ui-border-b tg-ui-border-gray-300"
         }
       >
         <input
           data-testid={`NumberInput-${name}`}
-          className="bg-transparent border-none w-full text-xl font-bold text-gray-700 px-2 focus:outline-none"
+          className="tg-ui-bg-transparent tg-ui-border-none tg-ui-w-full tg-ui-text-xl tg-ui-font-bold tg-ui-text-gray-700 tg-ui-px-2 focus:tg-ui-outline-none"
           type="number"
           min={0.01}
           step="0.01"
@@ -49,15 +49,14 @@ export const NumberInput = ({
           value={value}
           onBlur={onBlur}
           onChange={onChange}
-          // {...rest}
         />
         {suffix && (
-          <div className={error ? "text-red-500" : "text-gray-300"}>
+          <div className={error ? "tg-ui-text-red-500" : "tg-ui-text-gray-300"}>
             {suffix}
           </div>
         )}
       </div>
-      {error && <div className="text-red-500">{error}</div>}
+      {error && <div className="tg-ui-text-red-500">{error}</div>}
     </div>
   );
 };
