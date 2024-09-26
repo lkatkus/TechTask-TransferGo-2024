@@ -1,13 +1,24 @@
-// import Image from "next/image";
-
 import { ConversionWidget } from "../widgets/ConversionWidget";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="w-full flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <ConversionWidget />
+    <div className="p-4 grid gap-4 grid-rows-[min-content_1fr_min-content] min-h-screen font-[family-name:var(--font-geist-sans)]">
+      <header className="p-4 flex justify-center items-center bg-gray-200">
+        <div>HEADER</div>
+      </header>
+
+      <main className="grid gap-4 grid-cols-[400px_1fr]">
+        <div className="p-4 bg-gray-200">
+          <ConversionWidget />
+        </div>
+        <div className="p-4 flex justify-center items-center bg-gray-200">
+          <div>CONTENT</div>
+        </div>
       </main>
+
+      <footer className="p-4 flex justify-center items-center bg-gray-200">
+        FOOTER
+      </footer>
     </div>
   );
 }

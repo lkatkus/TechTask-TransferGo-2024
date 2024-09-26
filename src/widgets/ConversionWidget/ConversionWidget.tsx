@@ -122,37 +122,36 @@ const ConversionWidget = () => {
   }, [data]);
 
   return (
-    <div className="w-full p-4 md:bg-gray-100 relative">
-      <div className="w-full flex mb-4 items-center">
-        <div className="flex-1">
-          <SelectInput
-            label="FROM"
-            name="from"
-            value={formik.values.from}
-            onChange={handleChangeWithSubmit}
-            options={getCurrencyOptions(AVAILABLE_CURRENCY, formik.values.to)}
-          />
-        </div>
+    <div className="w-full p-4 md:bg-gray-100 relative flex flex-col shadow-lg">
+      <div className="mb-4 grid gap-1 grid-cols-[1fr_40px_1fr] items-center">
+        <SelectInput
+          label="FROM"
+          name="from"
+          value={formik.values.from}
+          onChange={handleChangeWithSubmit}
+          options={getCurrencyOptions(AVAILABLE_CURRENCY, formik.values.to)}
+        />
 
-        <button
-          className="bg-blue-500 mx-2 px-2"
-          onClick={handleClickSwitchCurrency}
-        >
+        <button className="mx-2 px-2" onClick={handleClickSwitchCurrency}>
           {">"}
         </button>
 
-        <div className="flex-1">
-          <SelectInput
-            label="TO"
-            name="to"
-            value={formik.values.to}
-            onChange={handleChangeWithSubmit}
-            options={getCurrencyOptions(AVAILABLE_CURRENCY, formik.values.from)}
-          />
-        </div>
+        <SelectInput
+          label="TO"
+          name="to"
+          value={formik.values.to}
+          onChange={handleChangeWithSubmit}
+          options={getCurrencyOptions(AVAILABLE_CURRENCY, formik.values.from)}
+        />
       </div>
 
-      <div className="mb-4 flex">
+      <div
+        className={
+          data
+            ? "mb-4 grid gap-1 grid-cols-[1fr_40px_1fr]"
+            : "mb-4 grid gap-1 grid-cols-[1fr]"
+        }
+      >
         <div className="flex-1">
           <NumberInput
             name="fromAmount"
@@ -166,42 +165,49 @@ const ConversionWidget = () => {
         </div>
 
         {data && (
-          <div className="flex-1">
-            <NumberInput
-              name="toAmount"
-              label="CONVERTED TO"
-              suffix={formik.values.to}
-              value={formik.values.toAmount}
-              error={formik.errors.toAmount}
-              onChange={formik.handleChange}
-              onBlur={handleBlurToAmount}
-            />
-          </div>
+          <>
+            <div />
+            <div className="flex-1">
+              <NumberInput
+                name="toAmount"
+                label="CONVERTED TO"
+                suffix={formik.values.to}
+                value={formik.values.toAmount}
+                error={formik.errors.toAmount}
+                onChange={formik.handleChange}
+                onBlur={handleBlurToAmount}
+              />
+            </div>
+          </>
         )}
       </div>
 
-      {!data ? (
-        <div>
+      <div className="mt-4">
+        {!data ? (
           <button
             disabled={isFetching}
             onClick={handleSubmit}
-            className="p-1 w-full bg-blue-500"
+            className="p-2 w-full bg-green-500 text-white"
           >
             Convert
           </button>
-        </div>
-      ) : (
-        <div>
+        ) : (
           <div>
-            1 {data.from} = {data.rate} {data.to}
+            <div className="mb-2">
+              <p className="text-s font-bold">
+                1 {data.from} = {data.rate} {data.to}
+              </p>
+            </div>
+            <div>
+              <p className="text-xs">
+                All figures are live mid-market rates, which are for
+                informational purposes only. To see the rates for money
+                transfer, please select sending money option.
+              </p>
+            </div>
           </div>
-          <div>
-            All figures are live mid-market rates, which are for informational
-            purposes only. To see the rates for money transfer, please select
-            sending money option.
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

@@ -20,16 +20,26 @@ export const NumberInput = ({
   onChange,
 }: NumberInputProps) => {
   return (
-    <div className="flex-1 flex flex-col">
+    <div className="flex flex-col">
       <label
         htmlFor={name}
-        className="block text-gray-700 text-xs font-bold mb-2"
+        className={
+          error
+            ? "text-red-500 text-xs font-bold mb-2"
+            : "text-gray-700 text-xs font-bold mb-2"
+        }
       >
         {label}
       </label>
-      <div className="flex">
+      <div
+        className={
+          error
+            ? "flex border-b border-red-500 text-red-500"
+            : "flex border-b border-gray-300"
+        }
+      >
         <input
-          className="flex-1"
+          className="bg-transparent border-none w-full text-2xl font-bold text-gray-700 px-2 focus:outline-none"
           type="number"
           min={0.01}
           step="0.01"
@@ -39,7 +49,7 @@ export const NumberInput = ({
           onBlur={onBlur}
           onChange={onChange}
         />
-        {suffix && <div className="ml-4">{suffix}</div>}
+        {suffix && <div>{suffix}</div>}
       </div>
       {error && <div className="text-red-500">{error}</div>}
     </div>

@@ -21,7 +21,7 @@ export const SelectInput = ({
   onChange,
 }: SelectInputProps) => {
   return (
-    <div className="flex-1">
+    <div className="flex flex-col border-b border-gray-300 py-2">
       <label
         htmlFor={name}
         className="block text-gray-700 text-xs font-bold mb-2"
@@ -29,7 +29,7 @@ export const SelectInput = ({
         {label}
       </label>
       <select
-        className="w-full"
+        className="bg-transparent border-none w-full text-xl text-gray-700 px-2 focus:outline-none"
         id={name}
         name={name}
         value={value}
@@ -37,7 +37,12 @@ export const SelectInput = ({
       >
         {options.map(({ value, label, disabled }) => {
           return (
-            <option key={value} value={value} disabled={disabled}>
+            <option
+              className="bg-red-100"
+              key={value}
+              value={value}
+              disabled={disabled}
+            >
               {label}
             </option>
           );

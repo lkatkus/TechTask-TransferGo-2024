@@ -20,6 +20,14 @@ const fetchConversionRate = async ({
   const url = new URL(API_FX_RATES_URL);
   url.search = params.toString();
 
+  return Promise.resolve({
+    from: "EUR",
+    to: "GBP",
+    rate: 0.83579,
+    fromAmount: 1,
+    toAmount: 0.84,
+  });
+
   const res = await fetch(url);
   const data = await res.json();
 
